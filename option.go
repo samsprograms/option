@@ -1,7 +1,5 @@
 package option
 
-import result "github.com/SamsPrograms/result"
-
 type Option[A any] struct {
 	value     A
 	has_value bool
@@ -38,21 +36,5 @@ func Map[A, B any](option Option[A], f func(A) B) Option[B] {
 		return Some(f(option.value))
 	} else {
 		return None[B]()
-	}
-}
-
-func ToResult[A any](option Option[A], err error) result.Result[A] {
-	if option.has_value {
-		return result.Ok(option.value)
-	} else {
-		return result.Err[A](err)
-	}
-}
-
-func FromResult[A any](result result.Result[A]) Option[A] {
-	if value, err := result.Unwrap(); err != nil {
-		return Some(value)
-	} else {
-		return None[A]()
 	}
 }
